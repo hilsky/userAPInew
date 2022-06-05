@@ -47,8 +47,13 @@ route.get('/:idProduk', (req, res) => {
 );
 
 route.put('/:idProduk', (req, res) => {
-    Produk.findByIdAndUpdate(req.params.idProduk, {
-        $set: req.body
+    //find and update
+    Produk.findOneAndUpdate({ idProduk: req.params.idProduk }, {
+        $set: {
+            namaProduk: req.body.namaProduk,
+            harga: req.body.harga,
+            jenisProduk: req.body.jenisProduk
+        }
     }, { new: true })
         .then(produk => {
             res.send(produk);
