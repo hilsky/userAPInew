@@ -33,82 +33,32 @@ route.get('/', (req, res) => {
 }
 );
 
-//get by idProduk
-route.get('/:id', async (req, res) => {
-    //idProduk
-    try {
-        if(mongoose.Types.ObjectId.isValid(req.params.idProduk)){
-            const produk = await Produk.findById(req.params.idProduk);
-            if (!produk) {
-                return res.status(404).send('The produk with the given ID was not found.');
-            }
-            res.send(produk);
-        } else {
-            res.status(400).send('Invalid ID');
-        }
-    }
-    catch(err){
-        res.status(500).send(err);
-    }
-}
-);
-
-route.delete('/:id', (req, res) => {
-    try {
-        if(!mongoose.Types.ObjectId.isValid(req.params.idProduk)) {
-            res.status(400).send({
-                message: 'Invalid ID'
-            });
-        }
-        Produk.findByIdAndRemove(req.params.idProduk)
-            .then(produk => {
-                if(!produk) {
-                    res.status(404).send({
-                        message: 'Produk not found'
-                    });
-                }
-                res.send(produk);
-            }
-            ).catch(err => {
-                res.status(500).send(err);
-            }
-            );
-    }
-    catch(err){
-        res.status(500).send(err);
-    }
-})
-
-route.put('/:id', (req, res) => {
-    try {
-        if(!mongoose.Types.ObjectId.isValid(req.params.idProduk)) {
-            res.status(400).send({
-                message: 'Invalid ID'
-            });
-        }
-        Produk.findByIdAndUpdate(req.params.idProduk, {
-            idProduk: req.body.idProduk,
-            namaProduk: req.body.namaProduk,
-            harga: req.body.harga,
-            jenisProduk: req.body.jenisProduk
-        }
-        ).then(produk => {
-            if(!produk) {
-                res.status(404).send({
-                    message: 'Produk not found'
-                });
-            }
+//get by nama
+route.get('/:idProduk', (req, res) => {
+    Produk.find({ idProduk: req.params.idProduk })
+        .then(produk => {
             res.send(produk);
         }
         ).catch(err => {
-            res.status(500).send(err);
+            res.status(400).send(err);
         }
         );
-    }
-    catch(err){
-        res.status(500).send(err);
-    }
-})
+}
+);
+
+route.put('/:idProduk', (req, res) => {
+    Produk.findByIdAndUpdate(req.params.idProduk, {
+        $set: req.body
+    }, { new: true })
+        .then(produk => {
+            res.send(produk);
+        }
+        ).catch(err => {
+            res.status(400).send(err);
+        }
+        );
+}
+);
 
 
 //fidn by name produk and then delete
