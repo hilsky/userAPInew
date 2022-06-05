@@ -23,6 +23,7 @@ app.use((req, res, next) => {
 
 
 app.use('/user', userRoute);
+app.use('/produk', produkRoute);
 
 mongoose.
     connect(
