@@ -35,7 +35,7 @@ route.get('/', (req, res) => {
 
 //get by nama
 route.get('/:idProduk', (req, res) => {
-    Produk.find({ idProduk: req.params.idProduk })
+    Produk.findOne({ idProduk: req.params.idProduk })
         .then(produk => {
             res.send(produk);
         }
@@ -45,6 +45,8 @@ route.get('/:idProduk', (req, res) => {
         );
 }
 );
+
+
 
 route.put('/:idProduk', (req, res) => {
     //find and update
