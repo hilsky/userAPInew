@@ -109,3 +109,30 @@ route.put('/:id', (req, res) => {
         res.status(500).send(err);
     }
 })
+
+
+//fidn by name produk and then delete
+route.delete('/:idProduk', (req, res) => {
+    try {
+        Produk.findOneAndRemove({
+            idProduk: req.params.idProduk
+        }
+        ).then(produk => {
+            if(!produk) {
+                res.status(404).send({
+                    message: 'Produk not found'
+                });
+            }
+            res.send(produk);
+        }
+        ).catch(err => {
+            res.status(500).send(err);
+        }
+        );
+    }
+    catch(err){
+        res.status(500).send(err);
+    }
+})
+
+module.exports = route;
